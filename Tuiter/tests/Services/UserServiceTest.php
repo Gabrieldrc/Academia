@@ -9,7 +9,7 @@ final class UserServiceTest extends \PHPUnit\Framework\TestCase {
 
     protected function setUp(): void{
         $conn = new \MongoDB\Client("mongodb://localhost");
-        $this->collection = $conn->Tuiter->usuarios;
+        $this->collection = $conn->tuiter->usuarios;
         $this->collection->drop();
         
     }
