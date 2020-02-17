@@ -9,9 +9,20 @@ final class UserServiceTest extends \PHPUnit\Framework\TestCase {
 
     protected function setUp(): void{
         $conn = new \MongoDB\Client("mongodb://localhost");
-        $this->collection = $conn->tuiter->usuarios;
-        $this->collection->drop();
-        
+        $list[]=$conn->Tuiter1->usuarios;
+        $list[]=$conn->Tuiter2->usuarios;
+        $list[]=$conn->Tuiter3->usuarios;
+        $list[]=$conn->Tuiter4->usuarios;
+        $list[]=$conn->Tuiter5->usuarios;
+        $list[]=$conn->Tuiter6->usuarios;
+        $list[]=$conn->Tuiter7->usuarios;
+        $list[]=$conn->Tuiter8->usuarios;
+        $list[]=$conn->Tuiter9->usuarios;
+        $list[]=$conn->Tuiter10->usuarios;        
+        $this->collection = $list;
+        for($i=0; $i<count($this->collection); $i++){
+            $this->collection[$i]->drop();        
+        }
     }
 
 
@@ -20,7 +31,7 @@ final class UserServiceTest extends \PHPUnit\Framework\TestCase {
     }
     public function testRegisterOk(){
         $us = new UserService($this->collection);
-        $user= $us->register("mati23", "1234", "matias");
+        $user= $us->register("mati23", "matias", "1234");
         $this->assertTrue($user);
 
     }
@@ -51,6 +62,16 @@ final class UserServiceTest extends \PHPUnit\Framework\TestCase {
         $us->register("mati23", "1234", "matias");
         $user=$us->getUser('culo44');
         $this->assertEquals($user->getUserId(), 'Null');
+    }
+
+    public function testOneThousandUsers(){
+        $us = new UserService($this->collection);
+        for($i=0;$i<1000;$i++){
+            $this->assertTrue($us->register("gab".$i, "1234", "matias"));
+        }
+        for($i=0;$i<1000;$i++){
+            $this->assertEquals('gab'.$i,$us->getUser('gab'.$i)->getUserId());
+        }
     }
 
 }
